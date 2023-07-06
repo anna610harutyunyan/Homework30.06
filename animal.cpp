@@ -1,5 +1,4 @@
 #include <iostream>
-static int constructerCount;
 
 class Animal
 {
@@ -11,6 +10,9 @@ class Animal
 	std::string movement_type;
 	std::string respiratory_system;
 	std::string breathing_system;
+protected:
+static int constructerCount;
+
 public:
 	int age;
 	int speed;
@@ -64,6 +66,7 @@ public:
 	Animal& operator ++()
 	{
 		std::cout << "Prefix " << __func__ << std::endl;
+		weight++;
 
 		return *this;
 	}
@@ -71,12 +74,18 @@ public:
 	{
 		std::cout << "Postix " << __func__ << std::endl;
 		Animal temp = *this;
-		++(*this);
+		++weight;
 		return temp;
 	}
 
-};
 
+       static int getCount()
+    {
+	return constructerCount;
+    }
+
+};
+int Animal::constructerCount=0;
 class Mammal :public Animal
 {
 	int fins_count;
@@ -125,6 +134,7 @@ int main(int argc, char** argv)
 	Animal obj;
 	obj++;
 	++obj;
-	std::cout << "We have called " << constructerCount << " constructors \n";
+	int count=Animal::getCount();
+	std::cout << "We have called " << count << " constructors \n";
 	return 0;
 }
